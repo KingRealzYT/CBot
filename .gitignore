@@ -1,0 +1,10 @@
+.idea/
+.gradle/
+build/
+out/
+logback.xml
+.env
+database.db
+gradle/
+buildSrc/
+/src/main/java/com/kingrealzyt/cbot/Config.java
