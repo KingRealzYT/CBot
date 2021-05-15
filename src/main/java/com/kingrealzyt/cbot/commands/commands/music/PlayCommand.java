@@ -2,6 +2,7 @@ package com.kingrealzyt.cbot.commands.commands.music;
 
 import com.kingrealzyt.cbot.commands.CommandContext;
 import com.kingrealzyt.cbot.commands.ICommand;
+import com.kingrealzyt.cbot.database.DatabaseManager;
 import com.kingrealzyt.cbot.lavaplayer.PlayerManager;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
@@ -17,7 +18,7 @@ public class PlayCommand implements ICommand {
         final TextChannel channel = event.getChannel();
 
         if (event.getArgs().isEmpty()) {
-            channel.sendMessage("Correct usage is `/play (youtube link)`").queue();
+            channel.sendMessage("Correct usage is `" + DatabaseManager.INSTANCE.getPrefix(event.getGuild().getIdLong()) + "play (youtube link)`").queue();
             return;
         }
 

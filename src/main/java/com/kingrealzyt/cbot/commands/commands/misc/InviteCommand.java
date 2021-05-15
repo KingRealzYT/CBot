@@ -33,7 +33,7 @@ public class InviteCommand implements ICommand {
         eb.setThumbnail(selfBot.getUser().getEffectiveAvatarUrl());
         eb.setTitle("CBot Invite Command");
         eb.addField("Invite:", "[Invite Link](" + event.getJDA().getInviteUrl() + ")", true);
-        eb.addField("Guilds Bot is in", "CBot is in " + event.getSelfUser().getJDA().getGuildCache(), true);
+        eb.addField("Guilds Bot is in", "CBot is in " + event.getSelfUser().getJDA().getGuilds(), true);
 
         event.getChannel().sendMessage(eb.build()).queue();
     }

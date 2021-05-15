@@ -2,6 +2,7 @@ package com.kingrealzyt.cbot.commands.commands.misc;
 
 import com.kingrealzyt.cbot.commands.CommandContext;
 import com.kingrealzyt.cbot.commands.ICommand;
+import com.kingrealzyt.cbot.database.DatabaseManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
@@ -39,7 +40,7 @@ public class PasteCommand implements ICommand {
         final List<String> args = event.getArgs();
 
         if (args.size() < 2) {
-            channel.sendMessage("Missing arguments").queue();
+            channel.sendMessage("Missing arguments, Usage:\n" + DatabaseManager.INSTANCE.getPrefix(event.getGuild().getIdLong()) + "paste (language) (what to paste)").queue();
             return;
         }
 
