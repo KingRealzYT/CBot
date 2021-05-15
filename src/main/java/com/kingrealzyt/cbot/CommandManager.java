@@ -4,15 +4,13 @@ import com.kingrealzyt.cbot.commands.CommandContext;
 import com.kingrealzyt.cbot.commands.ICommand;
 import com.kingrealzyt.cbot.commands.commands.fun.MemeCommand;
 import com.kingrealzyt.cbot.commands.commands.misc.*;
-import com.kingrealzyt.cbot.commands.commands.staff.BanCommand;
-import com.kingrealzyt.cbot.commands.commands.staff.BroadcastCommand;
-import com.kingrealzyt.cbot.commands.commands.staff.KickCommand;
-import com.kingrealzyt.cbot.commands.commands.staff.SetPrefixCommand;
+import com.kingrealzyt.cbot.commands.commands.staff.*;
 import com.kingrealzyt.cbot.commands.commands.music.*;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -43,6 +41,7 @@ public class CommandManager {
         addCommand(new BanCommand());
         addCommand(new BroadcastCommand());
         addCommand(new InviteCommand());
+        addCommand(new UnbanCommand());
     }
 
         private void addCommand(ICommand cmd) {
@@ -82,7 +81,7 @@ public class CommandManager {
 
         if (cmd != null) {
             event.getChannel().sendTyping().queue();
-            List<String> args = List.of(split).subList(1, split.length);
+            List<String> args = Arrays.asList(split).subList(1, split.length);
 
             CommandContext ctx = new CommandContext(event, args);
 

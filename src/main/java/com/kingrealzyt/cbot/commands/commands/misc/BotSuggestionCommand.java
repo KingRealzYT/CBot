@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class BotSuggestionCommand implements ICommand {
@@ -41,6 +42,6 @@ public class BotSuggestionCommand implements ICommand {
 
     @Override
     public List<String> getAliases() {
-        return List.of("bsuggest");
+        return Arrays.asList("bsuggest");
     }
 }

@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.entities.*;
 import javax.annotation.Nonnull;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -140,6 +141,6 @@ public class UserInfoCommand implements ICommand {
 
     @Override
     public List<String> getAliases() {
-        return List.of("ui");
+        return Arrays.asList("ui");
     }
 }

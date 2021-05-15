@@ -8,7 +8,7 @@ mainClassName = 'com.kingrealzyt.cbot.CBot'
 version '1.0'
 def jdaVersion = '4.2.0_168'
 
-sourceCompatibility = JavaVersion.VERSION_11
+sourceCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
     jcenter()

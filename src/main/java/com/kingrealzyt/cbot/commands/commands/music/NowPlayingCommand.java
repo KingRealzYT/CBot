@@ -11,6 +11,7 @@ import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class NowPlayingCommand implements ICommand {
@@ -60,7 +61,7 @@ public class NowPlayingCommand implements ICommand {
 
     @Override
     public List<String> getAliases() {
-        return List.of("np");
+        return Arrays.asList("np");
     }
 
 }

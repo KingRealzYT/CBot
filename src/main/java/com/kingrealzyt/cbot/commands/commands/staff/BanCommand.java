@@ -1,73 +1,68 @@
 package com.kingrealzyt.cbot.commands.commands.staff;
 
-import com.kingrealzyt.cbot.PrefixStuff;
 import com.kingrealzyt.cbot.commands.CommandContext;
 import com.kingrealzyt.cbot.commands.ICommand;
 import com.kingrealzyt.cbot.database.DatabaseManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Objects;
 
 public class BanCommand implements ICommand {
+
     @Override
     public void handle(CommandContext event) {
         final long guildId = event.getGuild().getIdLong();
-        String prefix = PrefixStuff.PREFIXES.computeIfAbsent(guildId, DatabaseManager.INSTANCE::getPrefix);
         List<String> args = event.getArgs();
-        Member member = event.getMember();
-        TextChannel channel = event.getChannel();
-        Member selfBot = member.getGuild().getSelfMember();
-        long targetId = Long.parseLong(args.get(0).replaceAll("<@", "").replaceAll(">", ""));
-        Member target = event.getGuild().getMemberById(targetId);
-
-
-        if (!member.hasPermission(Permission.MESSAGE_EMBED_LINKS)) {
-            channel.sendMessage("Sorry " + member.getAsMention() + ", you don't have the perms to do that. (Missing Embed Links Permission)").queue();
-            return;
-        } else if (!selfBot.hasPermission(Permission.MESSAGE_EMBED_LINKS)) {
-            channel.sendMessage("Sorry, I don't have the perms to do that. (I'm Missing Embed Links Permission)").queue();
-            return;
-        } else if (!member.hasPermission(Permission.BAN_MEMBERS)) {
-            channel.sendMessage("Sorry, " + member.getAsMention() + " You don't have the perms to do that. (Missing Ban Members").queue();
-            return;
-        } else if (!selfBot.hasPermission(Permission.BAN_MEMBERS)) {
-            channel.sendMessage("Sorry, I don't have the perms to do that. (Missing Ban Members").queue();
-            return;
-        } else if(target.hasPermission(Permission.BAN_MEMBERS) || !selfBot.canInteract(Objects.requireNonNull(target))) {
-            channel.sendMessage("Sorry, " + member + " I can't ban the user: " + target).queue();
-            return;
-        } else if (args.size() < 2) {
-            channel.sendMessage("Wrong command usage! Usage\n " + prefix + "ban <member> <reason>").queue();
-        }
+        long targetID = Long.parseLong(args.get(0).replaceAll("<@", "").replaceAll(">", "").replaceAll("!", ""));
+        Member target = event.getGuild().getMemberById(targetID);
+        Member author = event.getMember();
+        Member bot = event.getGuild().getSelfMember();
         int days = 0;
         String reason = "";
-        try {
-            days = Integer.parseInt(args.get(1));
-        } catch(Exception e) {
 
-        } try {
-            if (days == 0) {
-                reason = String.join(" ", args.subList(1, args.size()));
-            } else {
-                reason = String.join(" ", args.subList(2, args.size()));
+
+        if (args.isEmpty()) {
+            event.getChannel().sendMessage("Missing Arguments\n Usage: " + DatabaseManager.INSTANCE.getPrefix(guildId) + "ban <user> <time> <reason>").queue();
+        } else if (args.size() < 2) {
+            event.getChannel().sendMessage("Missing Arguments\n Usage: ``" + DatabaseManager.INSTANCE.getPrefix(guildId) + "ban <user> <time> <reason>``").queue();
+        } else if (args.size() > 2) {
+            if (!author.hasPermission(Permission.BAN_MEMBERS)) {
+                event.getChannel().sendMessage("Ban Failed | You are missing the permission Ban Members").queue();
+                return;
             }
-        } catch (Exception e) {
+            if (!bot.hasPermission(Permission.BAN_MEMBERS)) {
+                event.getChannel().sendMessage("Ban Failed | I am missing the permission Ban Members").queue();
+                return;
+            }
+            if (target.hasPermission(Permission.BAN_MEMBERS) || !bot.canInteract(target)) {
+                event.getChannel().sendMessage("Ban Failed | Target (" + target.getEffectiveName() + ") Has the Permission **BAN_MEMBERS** or has a higher role then me.").queue();
+            }
+            try {
+                days = Integer.parseInt(args.get(1));
+            } catch (Exception e) {
 
+            }
+            try {
+                if (days == 0) {
+                    reason = String.join(" ", args.subList(1, args.size()));
+                } else {
+                    reason = String.join(" ", args.subList(2, args.size()));
+                }
+            } catch (Exception e) {
+
+            }
+            target.ban(0, reason.equals("") ? null : reason).queue();
+            EmbedBuilder eb = new EmbedBuilder();
+            eb.setTitle("Successfully Banned: " + target.getEffectiveName());
+            eb.addField("Info: ", "Banned: " + target.getAsMention() + " By: " + author.getAsMention() + "\n Reason: " + reason, true);
+            eb.setColor(0xd01212);
+            eb.setFooter("Banned User");
+            eb.setTimestamp(Instant.now());
+            event.getChannel().sendMessage(eb.build()).queue();
         }
-        target.ban(days == 0 ? days : 0, reason == "" ? null : reason);
-        EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("Banned user");
-        eb.addField("User Banned: ", target.getEffectiveName(), true);
-        eb.addField("Reason: ", reason, true);
-        eb.addField("Banned By: ", event.getMessage().getAuthor().getName(), true);
-        eb.setTimestamp(Instant.now());
-
-        channel.sendMessage(eb.build()).queue();
     }
 
     @Override
