@@ -13,11 +13,7 @@ import java.sql.*;
 public class SQLiteDataSource implements DatabaseManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SQLiteDataSource.class);
-    private HikariDataSource ds;
-
-    private Connection getConnection() throws SQLException {
-        return ds.getConnection();
-    }
+    private final HikariDataSource ds;
 
     public SQLiteDataSource() {
         try {
@@ -31,9 +27,10 @@ public class SQLiteDataSource implements DatabaseManager {
                 }
             }
 
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
+
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl("jdbc:sqlite:database.db");
         config.setConnectionTestQuery("SELECT 1");
@@ -47,10 +44,11 @@ public class SQLiteDataSource implements DatabaseManager {
 
             // language = SQLite
             statement.execute("CREATE TABLE IF NOT EXISTS guild_settings (" +
-                                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                                "guild_id VARCHAR(20) NOT NULL," +
-                                "prefix VARCHAR(255) NOT NULL DEFAULT '"+defaultPrefix+"'" +
-                                ");");
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "guild_id VARCHAR(20) NOT NULL," +
+                    "prefix VARCHAR(255) NOT NULL DEFAULT '" + defaultPrefix + "'" +
+                    ");");
+            LOGGER.info("Table initialised");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -66,18 +64,18 @@ public class SQLiteDataSource implements DatabaseManager {
 
             try (final ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    return  resultSet.getString("prefix");
+                    return resultSet.getString("prefix");
                 }
             }
 
             try (final PreparedStatement insertStatement = getConnection()
-                    // Language = SQLite
+                    // language=SQLite
                     .prepareStatement("INSERT INTO guild_settings(guild_id) VALUES(?)")) {
+
                 insertStatement.setString(1, String.valueOf(guildId));
 
                 insertStatement.execute();
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -102,4 +100,51 @@ public class SQLiteDataSource implements DatabaseManager {
 
     }
 
+    @Override
+    public String getBcId(long guildId) {
+        try (final PreparedStatement preparedStatement = getConnection()
+                // language = SQLite
+                .prepareStatement("SELECT bcid FROM guild_settings WHERE guild_id = ?")) {
+
+            preparedStatement.setString(1, String.valueOf(guildId));
+
+            try (final ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return  resultSet.getString("bcid");
+                }
+            }
+
+            try (final PreparedStatement insertStatement = getConnection()
+                    // Language = SQLite
+                    .prepareStatement("INSERT INTO guild_settings(guild_id) VALUES(?)")) {
+                insertStatement.setString(1, String.valueOf(guildId));
+
+                insertStatement.execute();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return "None";
+    }
+
+    @Override
+    public void setBcId(long guildId, String newBcId) {
+        try (final PreparedStatement preparedStatement = getConnection()
+                // Language = SQLite
+                .prepareStatement("UPDATE guild_settings SET bcid = ? WHERE guild_id = ?")) {
+
+            preparedStatement.setString(1, newBcId);
+            preparedStatement.setString(2, String.valueOf(guildId));
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Connection getConnection() throws SQLException {
+        return ds.getConnection();
+    }
 }

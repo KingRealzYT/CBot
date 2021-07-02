@@ -42,6 +42,7 @@ public class CommandManager {
         addCommand(new BroadcastCommand());
         addCommand(new InviteCommand());
         addCommand(new UnbanCommand());
+        addCommand(new BrodcastChannelIdCommand());
     }
 
         private void addCommand(ICommand cmd) {

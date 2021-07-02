@@ -2,7 +2,7 @@ package com.kingrealzyt.cbot.commands.commands.staff;
 
 import com.kingrealzyt.cbot.commands.CommandContext;
 import com.kingrealzyt.cbot.commands.ICommand;
-import com.kingrealzyt.cbot.PrefixStuff;
+import com.kingrealzyt.cbot.DatabaseStuff;
 import com.kingrealzyt.cbot.database.DatabaseManager;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
@@ -17,7 +17,7 @@ public class SetPrefixCommand implements ICommand {
         final TextChannel channel = event.getChannel();
         final List<String> args = event.getArgs();
         final Member member = event.getMember();
-        String prefix = PrefixStuff.PREFIXES.get(event.getGuild().getIdLong());
+        String prefix = DatabaseStuff.PREFIXES.get(event.getGuild().getIdLong());
 
 
         if (!member.hasPermission(Permission.MANAGE_SERVER)) {
@@ -42,7 +42,7 @@ public class SetPrefixCommand implements ICommand {
     }
 
     private void updatePrefix(long guildId, String newPrefix) {
-        PrefixStuff.PREFIXES.put(guildId, newPrefix);
+        DatabaseStuff.PREFIXES.put(guildId, newPrefix);
         DatabaseManager.INSTANCE.setPrefix(guildId, newPrefix);
     }
 }

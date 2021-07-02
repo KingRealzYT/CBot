@@ -1,7 +1,7 @@
 package com.kingrealzyt.cbot.commands.commands.staff;
 
 import com.kingrealzyt.cbot.Config;
-import com.kingrealzyt.cbot.PrefixStuff;
+import com.kingrealzyt.cbot.DatabaseStuff;
 import com.kingrealzyt.cbot.commands.CommandContext;
 import com.kingrealzyt.cbot.commands.ICommand;
 import com.kingrealzyt.cbot.database.DatabaseManager;
@@ -14,7 +14,7 @@ public class BroadcastCommand implements ICommand {
     @Override
     public void handle(CommandContext event) {
         final long guildId = event.getGuild().getIdLong();
-        String prefix = PrefixStuff.PREFIXES.computeIfAbsent(guildId, DatabaseManager.INSTANCE::getPrefix);
+        String prefix = DatabaseStuff.PREFIXES.computeIfAbsent(guildId, DatabaseManager.INSTANCE::getPrefix);
         String raw = event.getMessage().getContentRaw();
         User user = event.getAuthor();
         List<String> args = event.getArgs();
@@ -23,7 +23,7 @@ public class BroadcastCommand implements ICommand {
                     List<String> test = Arrays.asList(event.getMessage().getContentRaw().split(prefix + "bc "));
                     test.subList(1, test.size());
                     String message = String.join(" ", test);
-                    event.getGuild().getTextChannelById("719005991483605033").sendMessage("This message has been sent by Realz (Owner of the Bot):\n`"+message+"`").queue();
+                    event.getGuild().getTextChannelById(DatabaseManager.INSTANCE.getBcId(guildId)).sendMessage("This message has been sent by Realz (Owner of the Bot):\n`"+message+"`").queue();
                     event.getChannel().sendMessage("Successfully Sent Broadcast!").queue();
         } else {
             event.getChannel().sendMessage("Your not the owner of this bot, you cannot do that!").queue();
