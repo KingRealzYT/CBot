@@ -5,6 +5,7 @@ import com.kingrealzyt.cbot.DatabaseStuff;
 import com.kingrealzyt.cbot.commands.CommandContext;
 import com.kingrealzyt.cbot.commands.ICommand;
 import com.kingrealzyt.cbot.database.DatabaseManager;
+import com.kingrealzyt.cbot.database.SQLiteDataSource;
 import net.dv8tion.jda.api.entities.User;
 
 import java.util.Arrays;
@@ -19,6 +20,7 @@ public class BroadcastCommand implements ICommand {
         User user = event.getAuthor();
         List<String> args = event.getArgs();
 
+        if (SQLiteDataSource.INSTANCE.)
         if (user.getId().equals(Config.owner_id) || user.getId().equals("701660977258561557")) {
                     List<String> test = Arrays.asList(event.getMessage().getContentRaw().split(prefix + "bc "));
                     test.subList(1, test.size());

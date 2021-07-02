@@ -39,15 +39,13 @@ public class SQLiteDataSource implements DatabaseManager {
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
         ds = new HikariDataSource(config);
 
-        try (final Statement statement = getConnection().createStatement()) {
-            final String defaultPrefix = Config.prefix;
+        try
+        {
+            final PreparedStatement statement = getConnection().prepareStatement(String.format("CREATE TABLE IF NOT EXISTS guild_settings (id INTEGER PRIMARY KEY AUTOINCREMENT, guild_id VARCHAR(20) NOT NULL, prefix VARCHAR(255) NOT NULL DEFAULT '%s')", Config.prefix));
+            statement.executeUpdate();
 
-            // language = SQLite
-            statement.execute("CREATE TABLE IF NOT EXISTS guild_settings (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "guild_id VARCHAR(20) NOT NULL," +
-                    "prefix VARCHAR(255) NOT NULL DEFAULT '" + defaultPrefix + "'" +
-                    ");");
+
+            statement.close();
             LOGGER.info("Table initialised");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -141,6 +139,22 @@ public class SQLiteDataSource implements DatabaseManager {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public boolean doesBcidExist(String guildID) {
+        try {
+            PreparedStatement statement = getConnection().prepareStatement("SELECT EXISTS(SELECT Bcid FROM guild_settings WHERE guild_id=?)");
+            statement.setString(1, guildID);
+            statement.execute();
+            ResultSet resultSet = statement.getResultSet();
+            resultSet.next();
+            boolean exists = resultSet.getBoolean(1);
+            statement.close();
+            return exists;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
