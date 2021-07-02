@@ -8,3 +8,5 @@ database.db
 gradle/
 buildSrc/
 /src/main/java/com/kingrealzyt/cbot/Config.java
+/database.db
+/build.bat
