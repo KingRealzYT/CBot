@@ -9,5 +9,6 @@ public interface DatabaseManager {
 
     String getBcId(long guildId);
     void setBcId(long guildId, String newBcId);
+    boolean doesBcidExist(String guildID);
 
 }

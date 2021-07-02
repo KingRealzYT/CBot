@@ -41,10 +41,8 @@ public class SQLiteDataSource implements DatabaseManager {
 
         try
         {
-            final PreparedStatement statement = getConnection().prepareStatement(String.format("CREATE TABLE IF NOT EXISTS guild_settings (id INTEGER PRIMARY KEY AUTOINCREMENT, guild_id VARCHAR(20) NOT NULL, prefix VARCHAR(255) NOT NULL DEFAULT '%s')", Config.prefix));
+            final PreparedStatement statement = getConnection().prepareStatement(String.format("CREATE TABLE IF NOT EXISTS guild_settings (id INTEGER PRIMARY KEY AUTOINCREMENT, guild_id VARCHAR(20) NOT NULL, prefix VARCHAR(255) NOT NULL DEFAULT '%s')", Config.PREFIX));
             statement.executeUpdate();
-
-
             statement.close();
             LOGGER.info("Table initialised");
         } catch (SQLException e) {
@@ -78,7 +76,7 @@ public class SQLiteDataSource implements DatabaseManager {
             e.printStackTrace();
         }
 
-        return Config.prefix;
+        return Config.PREFIX;
     }
 
     @Override
@@ -142,6 +140,7 @@ public class SQLiteDataSource implements DatabaseManager {
         }
     }
 
+    @Override
     public boolean doesBcidExist(String guildID) {
         try {
             PreparedStatement statement = getConnection().prepareStatement("SELECT EXISTS(SELECT Bcid FROM guild_settings WHERE guild_id=?)");
