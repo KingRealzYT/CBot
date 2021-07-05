@@ -20,8 +20,10 @@ public class BroadcastCommand implements ICommand {
         User user = event.getAuthor();
         List<String> args = event.getArgs();
 
-        if (SQLiteDataSource.INSTANCE.)
-        if (user.getId().equals(Config.owner_id) || user.getId().equals("701660977258561557")) {
+        if (SQLiteDataSource.INSTANCE.doesBcidExist(event.getGuild().getId())) {
+            // idk what you wanted to do here but there...
+        }
+        if (user.getId().equals(Config.OWNER_ID) || user.getId().equals("701660977258561557")) {
                     List<String> test = Arrays.asList(event.getMessage().getContentRaw().split(prefix + "bc "));
                     test.subList(1, test.size());
                     String message = String.join(" ", test);

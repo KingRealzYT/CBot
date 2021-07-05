@@ -39,7 +39,7 @@ public class Listener extends ListenerAdapter {
         String raw = event.getMessage().getContentRaw();
 
         if (raw.equalsIgnoreCase(prefix + "shutdown")
-                && user.getId().equals(Config.owner_id)) {
+                && user.getId().equals(Config.OWNER_ID)) {
             event.getChannel().sendMessage("I am now shutting down.").queue();
             LOGGER.info("Shutting down");
             event.getJDA().shutdown();
