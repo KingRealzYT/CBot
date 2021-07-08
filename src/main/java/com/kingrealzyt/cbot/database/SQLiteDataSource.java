@@ -41,7 +41,7 @@ public class SQLiteDataSource implements DatabaseManager {
 
         try
         {
-            final PreparedStatement statement = getConnection().prepareStatement(String.format("CREATE TABLE IF NOT EXISTS guild_settings (id INTEGER PRIMARY KEY AUTOINCREMENT, guild_id VARCHAR(20) NOT NULL, prefix VARCHAR(255) NOT NULL DEFAULT '%s')", Config.PREFIX));
+            final PreparedStatement statement = getConnection().prepareStatement(String.format("CREATE TABLE IF NOT EXISTS guild_settings (id INTEGER PRIMARY KEY AUTOINCREMENT, guild_id VARCHAR(20) NOT NULL, prefix VARCHAR(255) NOT NULL DEFAULT '%s')", Config.prefix));
             statement.executeUpdate();
             statement.close();
             LOGGER.info("Table initialised");
@@ -76,7 +76,7 @@ public class SQLiteDataSource implements DatabaseManager {
             e.printStackTrace();
         }
 
-        return Config.PREFIX;
+        return Config.prefix;
     }
 
     @Override

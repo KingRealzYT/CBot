@@ -6,6 +6,6 @@ logback.xml
 .env
 database.db
 buildSrc/
-/src/main/java/com/kingrealzyt/cbot/com.kingrealzyt.cbot.Config.java
+/src/main/java/com/kingrealzyt/cbot/Config.java
 /database.db
 /build.bat
