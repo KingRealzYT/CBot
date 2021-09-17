@@ -36,28 +36,12 @@ public class HelpCommand implements ICommand {
 
             EmbedBuilder eb = new EmbedBuilder();
             eb.setTitle("Help");
-            eb.addField("Music", "All the Music Commands", true);
             eb.addField("Fun", "Some Fun Commands", false);
             eb.addField("Misc", "Commands with no category", false);
             eb.addField("Staff", "Commands for a Servers Staff", false);
             eb.addField("All", "Shows every command for the bot", false);
             eb.setFooter("Ex: " + DatabaseManager.INSTANCE.getPrefix(guildId) + "help misc to get more info!\n" + "Requested By: " + member.getEffectiveName());
             eb.setTimestamp(Instant.now());
-            eb.setColor(0xd01212);
-            event.getChannel().sendMessage(eb.build()).queue();
-
-        } else if (msg.toLowerCase().contains("music")) {
-
-            EmbedBuilder eb = new EmbedBuilder();
-            eb.setTitle("Music Commands!");
-            eb.addField("Join", "Has the bot join your voice channel!", true);
-            eb.addField("Leave", "Has the bot leave your voice channel!", true);
-            eb.addField("Loop", "Has the bot loop the current track!", true);
-            eb.addField("Nowplaying", "Has the bot show what is currently playing! Aliases: np", true);
-            eb.addField("Play", "Has the bot play music! Takes youtube links and search!", true);
-            eb.addField("Queue", "Has the bot show the current queue! Shows up to 20 songs", true);
-            eb.addField("Skip", "Has the bot skip the current track!", true);
-            eb.addField("Stop", "Has the bot stop and clear the current queue!", true);
             eb.setColor(0xd01212);
             event.getChannel().sendMessage(eb.build()).queue();
 
@@ -97,18 +81,9 @@ public class HelpCommand implements ICommand {
             EmbedBuilder eb = new EmbedBuilder();
             eb.setTitle("All Commands!");
             eb.addField("Help", "Shows all the category's!", true);
-            eb.addField("Music", "All the Music Commands!", true);
             eb.addField("Fun", "Some Fun Commands!", true);
             eb.addField("Misc", "Commands with no category!", true);
             eb.addField("Staff", "Commands for a Servers Staff!", true);
-            eb.addField("Join", "Has the bot join your voice channel!", true);
-            eb.addField("Leave", "Has the bot leave your voice channel!", true);
-            eb.addField("Loop", "Has the bot loop the current track!", true);
-            eb.addField("Nowplaying", "Has the bot show what is currently playing! Aliases: np", true);
-            eb.addField("Play", "Has the bot play music! Takes youtube links and search!", true);
-            eb.addField("Queue", "Has the bot show the current queue! Shows up to 20 songs", true);
-            eb.addField("Skip", "Has the bot skip the current track!", true);
-            eb.addField("Stop", "Has the bot stop and clear the current queue!", true);
             eb.addField("Meme", "Sends a random meme!", true);
             eb.addField("Ping", "Shows the ping of the bot to the discord server!", true);
             eb.addField("Paste", "Lets you paste text! Needs a language given.", true);

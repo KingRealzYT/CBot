@@ -16,24 +16,24 @@ public class BrodcastChannelIdCommand implements ICommand {
     /* Big thank for V Play Games for helping me with this!*/
     @Override
     public void handle(CommandContext event) {
-        Member author = event.getMember();
+        Member author = event.getEvent().getMember();
         Pattern channelPattern = Pattern.compile("<?#?(\\d+)>?");
         String arg = event.getArgs().get(0);
         Matcher m = channelPattern.matcher(arg);
 
          if (!author.hasPermission(Permission.MANAGE_SERVER)) {
-            event.getChannel().sendMessage("Sorry, You don't have the right permissions to do that! (Needs Manage Server)").queue();
+            event.getEvent().getChannel().sendMessage("Sorry, You don't have the right permissions to do that! (Needs Manage Server)").queue();
         } else {
              if (!m.find()) {
-                 event.getChannel().sendMessage("Error, Could not find channel").queue();
+                 event.getEvent().getChannel().sendMessage("Error, Could not find channel").queue();
              }
              String channelId = m.group(1);
-             if (event.getJDA().getTextChannelCache().stream().noneMatch(t -> channelId.equals(t.getId()))) {
-                 event.getChannel().sendMessage("Error, Could not find channel").queue();
+             if (event.getEvent().getJDA().getTextChannelCache().stream().noneMatch(t -> channelId.equals(t.getId()))) {
+                 event.getEvent().getChannel().sendMessage("Error, Could not find channel").queue();
              }
              final String newBcid = channelId;
              updateBcid(event.getGuild().getIdLong(), newBcid);
-             event.getChannel().sendMessageFormat("New broadcast channel has been set to `%s`", newBcid).queue();
+             event.getEvent().getChannel().sendMessageFormat("New broadcast channel has been set to `%s`", newBcid).queue();
          }
 
 
